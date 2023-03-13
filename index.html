@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phaser使ってみる</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    //Phaser.Sceneを継承したクラスで, preload(), create(), 
+update()メソッドなどをオーバーライドする
+    //各ゲームに一つのSceneクラスを継承したクラスをつくる.
+    //ここからメニュー
+    class MenuScene extends Phaser.Scene{
+        constructor() {
+            // super(key:'menuScene')で渡す値はゲームの切り替えやスタートなどに使う
+            // Phaser.Scene.start('menuScene')やPhaser.Scene.switch('menuScene')など
+            super({ key: 'menuScene'});
+        }
+
+        //preload()はリソースの読み込み処理
+        //トランプの画像読み込みとかで使う
+        preload() {
+            //this.load.image();など
+        }
+
+        //ゲームのオブジェクトの生成処理, 初期化
+        create() {
+            this.add.text(150, 50, 'Menu');
+            const brackJackBtn = this.add.sprite(100, 100, 'button').setInteractive();
+            brackJackBtn.on('pointerdown', () => {
+                this.scene.start('blackJackScene');
+            });
+            const pokerBtn = this.add.sprite(200, 100, 'button').setInteractive();
+            pokerBtn.on('pointerdown', () => {
+                this.scene.switch('pokerScene');
+            });
+        }
+        
+        //ゲームループ処理
+        update() {
+
+        }
+    }
+    // ---------ここまでmenu--------------
+
+    //ここからブラックジャック
+    class BlackJackScene extends Phaser.Scene{
+        constructor() {
+            super({ key: 'blackJackScene'});
+        }
+
+        preload() {
+
+        }
+
+        create() {
+            this.add.text(100, 50, 'BlackJack');
+            const button = this.add.sprite(100, 100, 'button').setInteractive();
+            button.on('pointerdown', () => {
+                this.scene.start('menuScene');
+            });
+        }
+
+        update() {
+            
+        }
+    }
+    //---------ここまでブラックジャック---------
+
+    //ここからポーカー
+    class PokerScene extends Phaser.Scene{
+        constructor() {
+            super({ key: 'pokerScene'});
+        }
+
+        preload() {
+            
+        }
+
+        create() {
+            this.add.text(100, 50, 'Poker');
+            const button = this.add.sprite(100, 100, 'button').setInteractive();
+            button.on('pointerdown', () => {
+                this.scene.start('menuScene');
+            });
+        }
+
+        update() {
+            
+        }
+    }
+    //---------ここまでポーカー---------
+
+    //このconfigを new Phaser.Game(config)としてインスタンスを生成する.
+    const config = {
+        type: Phaser.AUTO,
+        width: 800,
+        height: 600,
+        //sceneにはクラス名をいれる.
+        //最初のsceneのインスタンスが生成される
+        scene: [MenuScene, BlackJackScene, PokerScene]
+    };
+
+    const game = new Phaser.Game(config);
+</script>
+</body>
+</html>
